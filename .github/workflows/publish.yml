@@ -24,6 +24,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Update
+        run: |
+          make fonts
+          make tiles
+
       - name: build
         env:
           BASE_URL: "/wildfires-2025"

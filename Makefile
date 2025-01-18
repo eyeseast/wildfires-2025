@@ -20,7 +20,7 @@ build:
 container:
 	docker run --rm -it self-hosted-maps:latest
 
-tiles: public/base.pmtiles public/fires.pmtiles
+tiles: public/base.pmtiles public/fires.geojson
 
 fires: $(DB) data/fires.geojson
 	uv run geojson-to-sqlite $(DB) $@ data/fires.geojson --spatialite --pk OBJECTID
