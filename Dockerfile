@@ -25,7 +25,7 @@ WORKDIR /app
 COPY . /app/
 
 RUN npm ci
-RUN poetry install --no-root
+RUN uv sync
 
 EXPOSE 8001
 EXPOSE 5173
