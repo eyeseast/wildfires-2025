@@ -66,6 +66,9 @@ map.once("load", (e) => {
       "line-width": ["interpolate", ["linear", 0.5], ["zoom"], 6, 0, 16, 0.75],
     },
   });
+
+  map.addControl(new maplibregl.NavigationControl());
+  map.addControl(new maplibregl.FullscreenControl());
 });
 
 window.map = map;
