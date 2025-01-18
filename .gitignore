@@ -46,3 +46,4 @@ build
 *.zip
 
 public/fonts/
+data/

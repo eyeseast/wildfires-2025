@@ -1,23 +1,14 @@
-[tool.poetry]
-name = "baltimore-trees"
+[project]
+name = "wildfires-2025"
 version = "0.1.0"
-description = "A demo project for NICAR24 in Baltimore"
-authors = ["Chris Amico <eyeseast@gmail.com>"]
+description = "Add your description here"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-datasette = "^0.64.6"
-sqlite-utils = "^3.36"
-geojson-to-sqlite = "^1.1.1"
-datasette-geojson-map = "^0.4.0"
-sqlite-colorbrewer = "^0.2"
-httpx = "^0.26.0"
-
-
-[tool.poetry.group.dev.dependencies]
-ipython = "^8.21.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires-python = ">=3.11"
+dependencies = [
+    "datasette-geojson-map>=0.5.0",
+    "datasette>=0.65.1",
+    "geojson-to-sqlite>=1.1.1",
+    "sqlite-utils>=3.38",
+    "sqlite-colorbrewer>=0.2",
+    "httpx>=0.28.1",
+]

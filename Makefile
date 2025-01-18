@@ -1,15 +1,17 @@
-DB = baltimore.db
+DB = fires.db
 
-SU = poetry run sqlite-utils
+SU = uv run sqlite-utils
 
-BBOX = -76.861861,39.096181,-76.360388,39.454149
+BBOX = -121.916742,32.141279,-113.611078,35.642196
+
+FILES_GEOJSON = https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Interagency_Perimeters_YearToDate/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson
 
 # https://maps.protomaps.com/builds/
 TODAY = $(shell date +%Y%m%d)
 PMTILES_BUILD = https://build.protomaps.com/$(TODAY).pmtiles
 
 install:
-	poetry install --no-root
+	uv sync
 	npm ci
 
 build:
@@ -18,10 +20,10 @@ build:
 container:
 	docker run --rm -it self-hosted-maps:latest
 
-tiles: public/baltimore.pmtiles public/trees.pmtiles
+tiles: public/base.pmtiles public/fires.pmtiles
 
-trees: $(DB) data/trees.ndjson
-	poetry run geojson-to-sqlite $(DB) $@ data/trees.ndjson --nl --spatialite --pk ID
+fires: $(DB) data/fires.geojson
+	uv run geojson-to-sqlite $(DB) $@ data/fires.geojson --spatialite --pk OBJECTID
 
 fonts:
 	wget https://github.com/protomaps/basemaps-assets/archive/refs/heads/main.zip
@@ -31,25 +33,31 @@ fonts:
 
 run:
 	# https://docs.datasette.io/en/stable/settings.html#configuration-directory-mode
-	npm run dev -- --open & poetry run datasette serve . --load-extension spatialite -h 0.0.0.0
+	npm run dev -- --open & uv run datasette serve . --load-extension spatialite -h 0.0.0.0
 
 ds:
-	poetry run datasette serve . --load-extension spatialite -h 0.0.0.0
+	uv run datasette serve . --load-extension spatialite -h 0.0.0.0
 
 clean:
 	rm -rf $(DB) $(DB)-shm $(DB)-wal public/*.pmtiles public/*.mbtiles public/fonts
 
-data/trees.ndjson:
-	poetry run ./download.py
+data/fires.geojson:
+	curl "$(FILES_GEOJSON)" | jq > $@
 
 $(DB):
 	$(SU) create-database $@ --enable-wal --init-spatialite
 
-public/baltimore.pmtiles:
-	pmtiles extract $(PMTILES_BUILD) $@ --bbox="$(BBOX)"
+public/base.pmtiles:
+	pmtiles extract $(PMTILES_BUILD) $@ --bbox="$(BBOX)" --maxzoom 12
 
-public/trees.pmtiles: data/trees.ndjson
-	tippecanoe -zg -o $@ --drop-densest-as-needed --layer trees $^
+public/fires.pmtiles: data/fires.geojson
+	tippecanoe -zg -o $@ --layer fires $^
 
-public/trees.mbtiles: data/trees.ndjson
-	tippecanoe -zg -o $@ --drop-densest-as-needed --layer trees $^
+public/fires.mbtiles: data/fires.geojson
+	tippecanoe -f -zg -o $@ --layer fires $^
+
+public/fires.geojson: data/fires.geojson
+	fio cat $^ --bbox "$(BBOX)" | fio collect > $@
+
+public/fires.fgb: data/fires.geojson
+	ogr2ogr -f FlatGeoBuf $@ $^
