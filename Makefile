@@ -17,6 +17,8 @@ install:
 build:
 	docker build . -t self-hosted-maps:latest
 
+update: clean fires
+
 container:
 	docker run --rm -it self-hosted-maps:latest
 
@@ -39,7 +41,7 @@ ds:
 	uv run datasette serve . --load-extension spatialite -h 0.0.0.0
 
 clean:
-	rm -rf $(DB) $(DB)-shm $(DB)-wal public/*.pmtiles public/*.mbtiles public/fonts
+	rm -rf public/fires.* data/fires.*
 
 data/fires.geojson:
 	curl "$(FILES_GEOJSON)" | jq > $@
