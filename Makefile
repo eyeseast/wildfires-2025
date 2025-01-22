@@ -22,7 +22,7 @@ update: clean fires
 container:
 	docker run --rm -it self-hosted-maps:latest
 
-tiles: public/base.pmtiles public/fires.geojson
+tiles: public/base.pmtiles
 
 fires: $(DB) data/fires.geojson
 	uv run geojson-to-sqlite $(DB) $@ data/fires.geojson --spatialite --pk OBJECTID
