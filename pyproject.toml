@@ -11,4 +11,5 @@ dependencies = [
     "sqlite-utils>=3.38",
     "sqlite-colorbrewer>=0.2",
     "httpx>=0.28.1",
+    "datasette-query-files>=0.1.1",
 ]

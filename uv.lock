@@ -60,7 +60,7 @@ name = "click"
 version = "8.1.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b9/2e/0090cbf739cee7d23781ad4b89a9894a41538e4fcf4c31dcdd705b78eb8b/click-8.1.8.tar.gz", hash = "sha256:ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a", size = 226593 }
 wheels = [
@@ -156,6 +156,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/88/6e/444b1ded1cd8f71cd86f4461c06ee88be2bb0682b0d54aa942c323f91411/datasette-leaflet-0.2.2.tar.gz", hash = "sha256:8fd4e634304be392ae6f7de770d4f22b95a37caecd676a35faeb6200da9423bc", size = 113285 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d0/df/61e8a7d601a2c4992f7e9f38a6b983a9f9b873fbeebe4248090eea4b5d87/datasette_leaflet-0.2.2-py3-none-any.whl", hash = "sha256:fd88c25666e7680b25b4c6e5546bd02c9f5836bbc0fee61042dbb6b93d4139f0", size = 112532 },
+]
+
+[[package]]
+name = "datasette-query-files"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "datasette" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/72/60/7b7e3466023744720fa446713dbb93a7987c778d77b5828796dd14484d63/datasette-query-files-0.1.1.tar.gz", hash = "sha256:dfcd8880fb6b1126545a1fb21448e228963596ea877754527e7cb4edf95baad8", size = 6824 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/af/07/31fb0cc38c202388c9d0076929e1ac7b9b3c2788e247248abdcbb4e74c52/datasette_query_files-0.1.1-py3-none-any.whl", hash = "sha256:6521e38682668f257bae09f78c02837f0a6158124c5cc10c0a125deb3d28676b", size = 7331 },
 ]
 
 [[package]]
@@ -606,6 +618,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "datasette" },
     { name = "datasette-geojson-map" },
+    { name = "datasette-query-files" },
     { name = "geojson-to-sqlite" },
     { name = "httpx" },
     { name = "sqlite-colorbrewer" },
@@ -616,6 +629,7 @@ dependencies = [
 requires-dist = [
     { name = "datasette", specifier = ">=0.65.1" },
     { name = "datasette-geojson-map", specifier = ">=0.5.0" },
+    { name = "datasette-query-files", specifier = ">=0.1.1" },
     { name = "geojson-to-sqlite", specifier = ">=1.1.1" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "sqlite-colorbrewer", specifier = ">=0.2" },
