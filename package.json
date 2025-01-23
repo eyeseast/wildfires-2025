@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "flatgeobuf": "^3.36.0",
     "maplibre-gl": "^5.0.1",
     "pmtiles": "^4.2.1",
     "protomaps-themes-base": "^4.3.1",

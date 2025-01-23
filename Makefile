@@ -17,7 +17,7 @@ install:
 build:
 	docker build . -t self-hosted-maps:latest
 
-update: clean fires
+update: fires tiles
 
 container:
 	docker run --rm -it self-hosted-maps:latest

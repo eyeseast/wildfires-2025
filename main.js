@@ -1,10 +1,13 @@
 import maplibregl from "maplibre-gl";
 import * as pmtiles from "pmtiles";
 import layers from "protomaps-themes-base";
+import { geojson } from "flatgeobuf";
 
 const protocol = new pmtiles.Protocol();
 
 maplibregl.addProtocol("pmtiles", protocol.tile);
+
+const BBOX = [-121.916742, 32.141279, -113.611078, 35.642196];
 
 const style = {
   version: 8,
@@ -18,10 +21,11 @@ const style = {
     },
 
     // load our fire data
-    fires: {
+    /*     fires: {
       type: "geojson",
       data: "fires.geojson",
     },
+    */
   },
 
   // this builds a set of layers matching the OpenMapTiles schema, using "protomaps" as a source ID
@@ -31,16 +35,23 @@ const style = {
 const map = new maplibregl.Map({
   container: "map",
   style,
-  maxBounds: [-121.916742, 32.141279, -113.611078, 35.642196],
+  maxBounds: BBOX,
   hash: true,
   center: [-117.938232, 34.170908],
   maxZoom: 12,
 });
 
-map.once("load", (e) => {
+map.once("load", async (e) => {
   const firstSymbolLayer = map
     .getStyle()
     .layers.find((layer) => layer.type === "symbol");
+
+  const fires = await Array.fromAsync(geojson.deserialize("./fires.fgb", BBOX));
+
+  map.addSource("fires", {
+    type: "geojson",
+    data: { type: "FeatureCollection", features: fires },
+  });
 
   // add our fire layer here
   map.addLayer(
