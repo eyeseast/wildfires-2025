@@ -7,7 +7,7 @@ BBOX = -121.916742,32.141279,-113.611078,35.642196
 FILES_GEOJSON = https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Interagency_Perimeters_YearToDate/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson
 
 # https://maps.protomaps.com/builds/
-TODAY = $(shell date +%Y%m%d)
+TODAY = $(shell date -v -1d +%Y%m%d) # actually yesterday
 PMTILES_BUILD = https://build.protomaps.com/$(TODAY).pmtiles
 
 install:
